@@ -27,17 +27,6 @@ html, body, [class*="css"] {
     border-bottom: 1px solid rgba(255,255,255,0.06);
     margin-bottom: 2rem;
 }
-.hero-badge {
-    display: inline-block;
-    font-size: 11px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: #c9a84c;
-    border: 1px solid rgba(201,168,76,0.3);
-    padding: 4px 14px;
-    border-radius: 20px;
-    margin-bottom: 0.75rem;
-}
 .hero h1 {
     font-family: 'Playfair Display', serif;
     font-size: 2.6rem;
@@ -123,7 +112,6 @@ div[data-testid="stAlert"] {
 </style>
 
 <div class="hero">
-  <div class="hero-badge">AI-Powered Discovery</div>
   <h1>🎬 Movie Recommender</h1>
   <p>Select a film you love — we'll find what to watch next.</p>
 </div>
