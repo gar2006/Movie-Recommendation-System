@@ -12,8 +12,8 @@ from nltk.tokenize import word_tokenize
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
-
-df = pd.read_csv(r"C:\Users\garim\Downloads\movies.csv")
+url="https://raw.githubusercontent.com/gar2006/Movie-Recommendation-System/refs/heads/main/movies.csv"
+df=pd.read_csv(url)
 
 required = ['genres', 'keywords', 'overview', 'title']
 df = df[required].dropna().reset_index(drop=True)
