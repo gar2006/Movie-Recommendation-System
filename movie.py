@@ -112,9 +112,13 @@ if st.button("🚀 Recommend Similar Movies"):
                 plot, poster = get_movie_details(movie_title)
 
                 with col:
-                    if poster != "N/A":
-                        st.image(poster, use_container_width=True)
-                    st.markdown(f"### {movie_title}")
+                   if poster != "N/A":
+                      st.image(poster, use_container_width=True)
+
+                   st.markdown(f"### {movie_title}")
+
+                   if plot != "N/A":
+                      st.caption(plot)
  
 
 text = " ".join(data['cleaned'])
