@@ -37,7 +37,7 @@ try:
     nltk.data.find('corpora/stopwords')
 except LookupError:
     nltk.download('stopwords')
-    stop_words = set(stopwords.words('english'))
+stop_words = set(stopwords.words('english'))
  
 def text_cleaning(text):
     text = re.sub(r"[^a-zA-Z\s]", "", text)
