@@ -21,9 +21,20 @@ df = df[required].dropna().reset_index(drop=True)
 df['combined'] = df['genres'] + " " + df['keywords'] + " " + df['overview']
 data = df[['title', 'combined']]
  
-nltk.download('punkt')
-nltk.download('stopwords')
-stop_words = set(stopwords.words('english'))
+try:
+    nltk.data.find('tokenizers/punkt')
+except LookupError:
+    nltk.download('punkt')
+
+try:
+    nltk.data.find('tokenizers/punkt_tab')
+except LookupError:
+    nltk.download('punkt_tab')
+
+try:
+    nltk.data.find('corpora/stopwords')
+except LookupError:
+    nltk.download('stopwords')
  
 def text_cleaning(text):
     text = re.sub(r"[^a-zA-Z\s]", "", text)
