@@ -236,15 +236,4 @@ with tab1:
                     st.markdown(card_html, unsafe_allow_html=True)
                     st.markdown("")  # spacing
 
-with tab2:
-    st.markdown("### Themes across the dataset")
-    text = " ".join(df['cleaned'])
-    wc = WordCloud(width=900, height=420, background_color='#0a0a0f',
-                   colormap='YlOrBr', max_words=120,
-                   contour_color='#2a2825', contour_width=1).generate(text)
-    fig, ax = plt.subplots(figsize=(9, 4))
-    fig.patch.set_facecolor('#0a0a0f')
-    ax.imshow(wc, interpolation='bilinear')
-    ax.axis('off')
-    st.pyplot(fig)
-    st.caption("Word prominence reflects TF-IDF weight across all movie descriptions.")
+ 
