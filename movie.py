@@ -30,12 +30,13 @@ try:
     nltk.data.find('tokenizers/punkt_tab')
 except LookupError:
     nltk.download('punkt_tab')
-    stop_words = set(stopwords.words('english'))
+     
 
 try:
     nltk.data.find('corpora/stopwords')
 except LookupError:
     nltk.download('stopwords')
+    stop_words = set(stopwords.words('english'))
  
 def text_cleaning(text):
     text = re.sub(r"[^a-zA-Z\s]", "", text)
