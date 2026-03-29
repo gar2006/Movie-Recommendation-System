@@ -1,10 +1,8 @@
 nltk
 pandas
 numpy
-json
 streamlit
-re
 requests
-matplotlib.pyplot
+matplotlib
 wordcloud
-sklearn
+scikit-learn
