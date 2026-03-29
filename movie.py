@@ -30,6 +30,7 @@ try:
     nltk.data.find('tokenizers/punkt_tab')
 except LookupError:
     nltk.download('punkt_tab')
+    stop_words = set(stopwords.words('english'))
 
 try:
     nltk.data.find('corpora/stopwords')
