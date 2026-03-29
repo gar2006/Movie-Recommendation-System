@@ -1,0 +1,10 @@
+nltk
+pandas
+numpy
+json
+streamlit
+re
+requests
+matplotlib.pyplot
+wordcloud
+sklearn
