@@ -2,14 +2,12 @@ import json, re, os, requests
 import streamlit as st
 import pandas as pd
 import nltk
-import matplotlib.pyplot as plt
-from wordcloud import WordCloud
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
-# ── Page config ──────────────────────────────────────────────────────────────
+# ── Page config ───────────────────────────────────────────────────────────────
 st.set_page_config(page_title="Movie Recommender", page_icon="🎬", layout="wide")
 
 # ── Custom CSS ────────────────────────────────────────────────────────────────
@@ -23,7 +21,6 @@ html, body, [class*="css"] {
     color: #e8e6e1;
 }
 
-/* Hero header */
 .hero {
     text-align: center;
     padding: 2.5rem 1rem 1.5rem;
@@ -51,7 +48,6 @@ html, body, [class*="css"] {
 }
 .hero p { font-size: 15px; color: #6a6865; font-weight: 300; margin: 0; }
 
-/* Section headings */
 .section-meta { margin-bottom: 1.2rem; }
 .section-meta small {
     font-size: 11px;
@@ -66,7 +62,6 @@ html, body, [class*="css"] {
     margin: 2px 0 0;
 }
 
-/* Movie card */
 .movie-card {
     background: #12101a;
     border: 1px solid rgba(255,255,255,0.06);
@@ -105,7 +100,6 @@ html, body, [class*="css"] {
     margin-bottom: 6px;
 }
 
-/* Selectbox + button tweaks */
 div[data-testid="stSelectbox"] > div:first-child {
     background: #16141e !important;
     border-color: rgba(255,255,255,0.1) !important;
@@ -122,14 +116,6 @@ div[data-testid="stSelectbox"] > div:first-child {
     font-family: 'DM Sans', sans-serif !important;
 }
 .stButton > button:hover { background: #d4b560 !important; }
-
-/* Spinner */
-div[data-testid="stSpinner"] { color: #c9a84c; }
-
-/* Divider */
-hr { border-color: rgba(255,255,255,0.06) !important; }
-
-/* Warning / success */
 div[data-testid="stAlert"] {
     background: rgba(255,255,255,0.04) !important;
     border-color: rgba(255,255,255,0.1) !important;
@@ -197,43 +183,38 @@ def recommend(movie_name, top_n=9):
     return results
 
 # ── UI ────────────────────────────────────────────────────────────────────────
-tab1, tab2 = st.tabs(["🎬 Recommendations", "☁️ Word Cloud"])
+movie_list = sorted(df['title'].unique())
+col_sel, col_btn = st.columns([4, 1])
+with col_sel:
+    selected = st.selectbox("Choose a film you love", movie_list, label_visibility="collapsed")
+with col_btn:
+    go = st.button("Find Similar", use_container_width=True)
 
-with tab1:
-    movie_list = sorted(df['title'].unique())
-    col_sel, col_btn = st.columns([4, 1])
-    with col_sel:
-        selected = st.selectbox("Choose a film you love", movie_list, label_visibility="collapsed")
-    with col_btn:
-        go = st.button("Find Similar", use_container_width=True)
+if go:
+    with st.spinner("Finding your next watch..."):
+        recs = recommend(selected)
 
-    if go:
-        with st.spinner("Finding your next watch..."):
-            recs = recommend(selected)
+    if recs is None or recs.empty:
+        st.warning("No recommendations found for that title.")
+    else:
+        st.markdown(f"""
+        <div class="section-meta">
+          <small>Because you liked</small>
+          <h2>{selected}</h2>
+        </div>""", unsafe_allow_html=True)
 
-        if recs is None or recs.empty:
-            st.warning("No recommendations found for that title.")
-        else:
-            st.markdown(f"""
-            <div class="section-meta">
-              <small>Because you liked</small>
-              <h2>{selected}</h2>
-            </div>""", unsafe_allow_html=True)
-
-            cols = st.columns(3)
-            for i, (_, row) in enumerate(recs.iterrows()):
-                plot, poster, year, genre = get_movie_details(row['title'])
-                with cols[i % 3]:
-                    card_html = f'<div class="movie-card">'
-                    if poster and poster != "N/A":
-                        card_html += f'<img src="{poster}" alt="{row["title"]}">'
-                    card_html += f"""
-                    <div class="movie-card-body">
-                      <div class="match-badge">{row['score']}% match</div>
-                      <div class="movie-card-title">{row['title']}{' · ' + year if year else ''}</div>
-                      {f'<p class="movie-card-plot">{plot}</p>' if plot else ''}
-                    </div></div>"""
-                    st.markdown(card_html, unsafe_allow_html=True)
-                    st.markdown("")  # spacing
-
- 
+        cols = st.columns(3)
+        for i, (_, row) in enumerate(recs.iterrows()):
+            plot, poster, year, genre = get_movie_details(row['title'])
+            with cols[i % 3]:
+                card_html = f'<div class="movie-card">'
+                if poster and poster != "N/A":
+                    card_html += f'<img src="{poster}" alt="{row["title"]}">'
+                card_html += f"""
+                <div class="movie-card-body">
+                  <div class="match-badge">{row['score']}% match</div>
+                  <div class="movie-card-title">{row['title']}{' · ' + year if year else ''}</div>
+                  {f'<p class="movie-card-plot">{plot}</p>' if plot else ''}
+                </div></div>"""
+                st.markdown(card_html, unsafe_allow_html=True)
+                st.markdown("")
