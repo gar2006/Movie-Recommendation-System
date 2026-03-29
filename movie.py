@@ -52,8 +52,17 @@ def recommend(movie_name, top_n=10):
     movie_indices = [i[0] for i in scores]
     return data.iloc[movie_indices][['title']]
  
-config = json.load(open(r"C:\Users\garim\Downloads\config.json"))
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# Path to config.json inside repository
+config_path = os.path.join(BASE_DIR, "config.json")
+
+# Load config
+with open(config_path, "r") as f:
+    config = json.load(f)
+
 OMDB_API_KEY = config["OMDB_API_KEY"]
+
 
 def get_movie_details(title):
     url = "http://www.omdbapi.com/"
