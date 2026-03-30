@@ -112,12 +112,11 @@ div[data-testid="stAlert"] {
 </style>
 
 <div class="hero">
-  <h1>🎬 Movie Recommender</h1>
+  <h1>Movie Recommender</h1>
   <p>Select a film you love — we'll find what to watch next.</p>
 </div>
 """, unsafe_allow_html=True)
-
-# ── Data loading ──────────────────────────────────────────────────────────────
+ 
 @st.cache_data
 def load_data():
     url = "https://raw.githubusercontent.com/gar2006/Movie-Recommendation-System/refs/heads/main/movies.csv"
@@ -148,7 +147,7 @@ def build_similarity(df):
 df = load_data()
 similarity = build_similarity(df)
 
-# ── OMDB ──────────────────────────────────────────────────────────────────────
+ 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 with open(os.path.join(BASE_DIR, "config.json")) as f:
     OMDB_API_KEY = json.load(f)["OMDB_API_KEY"]
@@ -170,7 +169,6 @@ def recommend(movie_name, top_n=9):
     results['score'] = [round(s * 100) for _, s in scores]
     return results
 
-# ── UI ────────────────────────────────────────────────────────────────────────
 movie_list = sorted(df['title'].unique())
 col_sel, col_btn = st.columns([4, 1])
 with col_sel:
